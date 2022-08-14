@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+    {% block pagename %}
+    reports
+    {% endblock pagename %}
+
+    {% block page %}
+    Reports
+    {% endblock page %}
+
+    {% block replink %}
+    active bg-gradient-primary
+    {% endblock replink %}
+
+    {% block content %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-secondary shadow-secondary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Create Report</h6>
+                        </div>
+                    </div>
+
+                    <div class="card-body px-0 pb-2">
+                        <div class="col-md-12 mb-lg-0 mb-4">
+                            <div class="card mt-4">
+                                <div class="card-header pb-0 p-3">
+                                    <div class="row">
+                                        <div class="col-6 d-flex align-items-center">
+                                            <h6 class="mb-0">Select Time Interval</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form method="POST" action="generatepdf" role="form" class="text-start">
+                                    {% csrf_token %}
+                                    <div class="card-body p-3">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-md-0 mb-4">
+                                                <div class="input-group input-group-outline">
+                                                    <label class="form-label"></label>
+                                                    <input type="date" class="form-control" name="fromdate"  style="width:2px  !important;">
+                                                </div>
+                                            </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group input-group-outline">
+                                            <label class="form-label"></label>
+                                            <input type="date" class="form-control" name="todate"  style="width:2px  !important;">
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <a class="btn bg-gradient-dark mb-0">
+                                        <button type= "submit" value="generatepdf">
+                                        <i class="material-icons text-lg position-relative me-1">picture_as_pdf</i>&nbsp;&nbsp;Generate Pdf
+                                        </button>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-4 d-flex align-items-center">
+                                    <h6 class="mb-0">Print all of cheque records </h6>
+                                </div>
+                                <div class="col-md-4">
+                                   ===================================>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <a class="btn bg-gradient-dark mb-0" href={% url 'generateall' %}>
+                                    
+                                    <i class="material-icons text-lg position-relative me-1">picture_as_pdf</i>&nbsp;&nbsp;Generate Pdf
+                                    </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

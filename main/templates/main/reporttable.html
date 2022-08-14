@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>Report Pdf</title>
+        <style>
+            table {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 100%;
+            }
+            
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 8px;
+            }
+            
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
+            </style>
+    </head>
+
+    <body>
+      ABC Traders<br>
+
+      System generated report according to the data in database.
+
+        <div>
+                
+                <table>
+                  <tr>
+                    <th>Party Name</th>
+                    <th>Bank Name</th>
+                    <th>Account Holder Name</th>
+                    <th>Cheque no.</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Cheque Collected</th>
+                  </tr>
+                  {% for list in list %}
+                  <tr>
+                    <td>{{list.party_name}}</td>
+                    <td>{{list.bank_name}}</td>
+                    <td>{{list.account_holders_name}}</td>
+                    <td>{{list.cheque_number}}</td>
+                    <td>{{list.amount}}</td>
+                    {% if list.cheque_released %}
+                    <td>Cleared on: {{list.cheque_released_date}}</td>
+                    {% else %}
+                    <td>Not cleared</td>
+                    {% endif %}
+                    <td>{{list.cheque_due_date}}</td>
+                    <td>{{list.cheque_received_date}}</td>
+                  </tr>
+                  
+                 {% endfor %}
+                 <tr>
+                  <td colspan="4"><strong> Totals </strong></td>
+                  
+                  <td><strong>{{total}}</strong></td>
+                  <td colspan="2"><strong>Cleared: {{releasedcheques}} <br>Pending: {{unreleasedcheques}}</strong></td>
+                  
+                  <td ><strong>No. of records: {{num}} </strong> </td>
+
+                </tr>
+                </table>
+        </div>
+    </body>
+
+
+</html>

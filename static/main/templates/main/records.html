@@ -1,0 +1,162 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+    {% block pagename %}
+    records
+    {% endblock pagename %}
+
+    {% block page %}
+    Records
+    {% endblock page %}
+
+    {% block rlink %}
+    active bg-gradient-primary
+    {% endblock rlink %}
+
+    {% block content %}
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-capitalize ps-3">Data table</h6>
+                    <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                      <li class="nav-item">
+                          
+                          <form method="GET" action="/records/" class="form-inline">
+                            <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                              <div class="input-group input-group-outline">
+                                <label class="form-label">Search here...</label>
+                                <input type="text" class="form-control" name="search" id="search" type="search" style="width:2px  !important;">
+                                <button type="submit" class="btn btn-outline-primary btn-sm mb-0"><i class="fa fa-search me-sm-1"></i></button>
+                              </div>
+                            
+                            </div> 
+                          </form>
+                        
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
+                          
+                          <span class="ms-1 sorting">
+                            <select class="btn btn-outline-primary btn-sm mb-0"  name="sort" id="status-list" onchange="location= finalurl1();">
+                              <option class="btn btn-outline-primary btn-sm mb-0" value=""disabled selected hidden >Cheque Status</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="True">Released</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="False">Not Released</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="">Reset</option>
+                            </select>
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
+                          
+                          <span class="ms-1 sorting">
+                            <select class="btn btn-outline-primary btn-sm mb-0" name="sort" id="sort-list" onchange="location= finalurl2();">
+                              <option class="btn btn-outline-primary btn-sm mb-0" value=""disabled selected hidden >Sort By Dates</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="-cheque_due_date">Due Date: Recent First</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="cheque_due_date">Due Date: Older Firt</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="-cheque_received_date">Cheque Entry: Latest to Older</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="cheque_received_date">Cheque Entry: Older to Recent</option>
+                              <option class="btn btn-outline-primary btn-sm mb-0" value="">Reset</option>
+                            </select>
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{% url 'addrecord' %}" class="nav-link mb-0 px-0 py-1">
+                        <button type="button" class="btn btn-outline-primary btn-sm mb-0">ADD NEW</button>
+                        </a>
+                      </li>
+                    </ul>
+              </div>
+ 
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Party Info</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cheque Detail</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Amount</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cheque Status</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cheque Due Date</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cheque Received Date</th>
+                      <th class="text-secondary opacity-7"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for list in lists %}
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">{{list.party_name}}</h6>
+                            <p class="text-xs text-secondary mb-0">{{list.bank_name}}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">{{list.account_holders_name}}</p>
+                        <p class="text-xs text-secondary mb-0">{{list.cheque_number}}</p>
+                      </td>
+                      <td>
+                        <h6 class="mb-0 text-sm">{{list.amount}}</h6>
+                      </td>
+                      
+                      <td class="align-middle text-center text-sm">
+                        {% if list.cheque_released %}
+                        <span class="badge badge-sm bg-gradient-success">Released</span>
+                        <p class="text-xs text-secondary mb-0">{{list.cheque_released_date}}</p>
+                        {% else %}
+                        <span class="badge badge-sm bg-gradient-danger">Not Released</span>
+                        {% endif %}
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{list.cheque_due_date}}</span>
+                        
+                      </td>
+                      <td class="align-middle text-center">
+                        
+                        <span class="text-xs text-secondary mb-0">{{list.cheque_received_date}}</span>
+                      </td>
+                      <td class="align-middle">
+                        <a href="{% url 'updaterecord' list.id %}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          Edit/View
+                        </a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        function finalurl1()
+        {
+          var url = new URL(window.location.href);
+          var search_params = url.searchParams;
+          search_params.set('status',document.getElementById("status-list").value);
+          url.search = search_params.toString();
+          var new_url = url.toString();
+          return new_url
+        }
+
+        function finalurl2()
+        {
+          var url = new URL(window.location.href);
+          var search_params = url.searchParams;
+          search_params.set('sort',document.getElementById("sort-list").value);
+          url.search = search_params.toString();
+          var new_url = url.toString();
+          return new_url
+        }
+    </script>
+    {% endblock content %}
